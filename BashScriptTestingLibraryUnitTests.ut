@@ -1,0 +1,168 @@
+#!/bin/bash
+# Written by Ryan Fritts - Questions, comments, and criticisms welcome.  
+
+source BashScriptTestingLibrary.shl
+
+function setUp () {
+    touch testFile
+}
+
+function testAssertEqualsWithStrings () {
+    assertEquals "something" "something"
+} 
+
+
+function testAssertEqualsWithIntegers () {
+    assertEquals 10 10 
+} 
+
+
+function testAssertEqualsWithIntegers2 () {
+    assertEquals 5 $((10 - 5))
+}
+
+function testAssertEqualsWithIntegers3 () {
+    assertEquals 1 1
+}
+
+function testAssertEqualsWithDoubles () {
+    assertEquals 5.5 5.5
+}
+
+
+function testAssertEqualsWithDoubles2 () {
+    assertEquals 5.5 5.50
+}
+
+
+function testAssertEqualsWithArrays () {
+    local array1=(1,2,3)
+    local array2=(1,2,3)
+    assertEquals $array1 $array2
+} 
+
+
+function testAssertNotSameWithStrings () {
+    assertNotSame "something" "something else"
+}
+
+
+function testAssertNotSameWithIntegers () {
+    assertNotSame 5 6
+}
+
+
+function testAssertNotSameWithArrays () {
+    local array1=(1,2,3)
+    local array2=(4,5,6)
+    assertNotSame $array1 $array2 
+}
+
+
+function testAssertNull () {
+    nullString=""
+    assertNull $nullString
+}
+
+
+function testAssertTrueWithFilename () {
+    assertTrue  "-f \"testFile\""
+}
+
+
+function testAssertTrueWithIntegers () {
+    assertTrue "10 = 10"
+}
+
+
+function testAssertFalseWithIntegers () {
+    assertFalse "10 = 5"
+}
+
+
+function testAssertFalseWithFilename () {
+    assertFalse  "-f \"testFile2\""
+}
+
+
+function testAssertFalseWithArray () {
+    local array1=(1,2,3)
+    local array2=(4,5,6)
+    assertFalse "${array1} = ${array2}" 
+}
+
+function testAssertEqualsWithStringsFailure () {
+    assertEquals "something" "something else"
+}
+
+
+function testAssertEqualsWithIntegersFailure () {
+    assertEquals 5 10
+}
+
+
+function testAssertEqualsWithArraysFailure () {
+    local array1=(1,2,3)
+    local array2=(4,5,6)
+    assertEquals $array1 $array2
+}
+
+
+function testAssertNotSameWithIntegersFailure () {
+    assertNotSame 5 5
+}
+
+
+function testAssertNotSameWithStringsFailure () {
+    assertNotSame "same" "same"
+}
+
+
+function testAssertNotSameWithArrayFailure () {
+    local array1=(1,2,3)
+    local array2=(1,2,3)
+    assertNotSame $array1 $array2
+}
+
+
+function testAssertNullWithIntegerFailure () {
+    assertNull 5
+}
+
+
+function testAssertNullWithStringFailure () {
+    assertNull "something"
+}
+
+
+function testAssertNullWithArrayFailure () {
+    local array1=(1,2,3)
+    assertNull $array1
+}
+
+
+function testAssertTrueWithFilenameFailure () {
+    assertTrue  "-f \"testFile2\""
+}
+
+
+function testAssertTrueWithIntegersFailure () {
+    assertTrue  "10 = 5"
+}
+
+
+function testAssertFalseWithFilenameFailure () {
+    assertFalse "-f \"testFile\""
+}
+
+function testAssertFalseWithIntegersFailure () {
+    assertFalse "10 = 10"
+}
+
+
+function tearDown () {
+    rm testFile
+}
+
+
+runUnitTests
