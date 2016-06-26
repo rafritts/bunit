@@ -1,0 +1,177 @@
+#!/bin/bash
+# Written by Ryan Fritts - Questions, comments, and criticisms welcome.
+
+PASSED_TESTS=0
+FAILED_TESTS=0
+TOTAL_TESTS=0
+
+# Assert Functions
+
+function assertEquals () {
+    if [ $(correctNumberOfArgs $# 2) = "true" ]
+    then
+        lineNo=$(echo $(caller) | awk '{print $1}')
+        TestCaseCallingAssert=${FUNCNAME[1]}
+        if [ "${1}" = "${2}" ] || [ "$(numericCompare "$1" "$2")" = "true" ]
+            then
+            echo "LineNo $lineNo: Passed - $TestCaseCallingAssert"
+            incrementPassedTests
+        else
+            echo "LineNo $lineNo: $TestCaseCallingAssert: assertEquals() failed. Expected \"$1\", but got \"$2\"."
+            incrementFailedTests
+        fi
+    else echo "LineNo $lineNo: $TestCaseCallingAssert: assertEquals() failed. Expected two arguments."
+      incrementFailedTests
+    fi
+}
+
+
+function assertNotSame () {
+    if [ $(correctNumberOfArgs $# 2) = "true" ]
+    then
+        lineNo=$(echo $(caller) | awk '{print $1}')
+        TestCaseCallingAssert=${FUNCNAME[1]}
+        if [ "${1}" != "${2}" ]
+            then
+            echo "LineNo $lineNo: Passed - $TestCaseCallingAssert"
+            incrementPassedTests
+        else
+            echo "LineNo $lineNo: $TestCaseCallingAssert: assertNotSame() failed. Expected not \"$1\", but got \"$2\"."
+            incrementFailedTests
+        fi
+    else echo "LineNo $lineNo: $TestCaseCallingAssert: assertNotSame() failed. Expected two arguments."
+      incrementFailedTests
+    fi
+}
+
+function assertNull () {
+        lineNo=$(echo $(caller) | awk '{print $1}')
+        TestCaseCallingAssert=${FUNCNAME[1]}
+        if [ "${1}" = "" ]
+        then
+            echo "LineNo $lineNo: Passed - $TestCaseCallingAssert"
+            incrementPassedTests
+        else
+            echo "LineNo $lineNo: $TestCaseCallingAssert: assertNull() failed. Expected empty string, but got \"$1\"."
+            incrementFailedTests
+        fi
+}
+
+function assertTrue () {
+    if [ $(correctNumberOfArgs $# 1) = "true" ]
+    then
+        lineNo=$(echo $(caller) | awk '{print $1}')
+        TestCaseCallingAssert=${FUNCNAME[1]}
+        eval [ $1 ]
+        testResult=$?
+        if [ "$testResult" = "0" ]
+            then
+            echo "LineNo $lineNo: Passed - $TestCaseCallingAssert"
+            incrementPassedTests
+        else
+            echo "LineNo $lineNo: $TestCaseCallingAssert: assertTrue() failed. Boolean Expression [ $1 ] expected to evaluate as true, evaluated as false."
+            incrementFailedTests
+        fi
+    else echo "LineNo $lineNo: $TestCaseCallingAssert: assertTrue() failed. Expected one argument."
+      incrementFailedTests
+    fi
+}
+
+
+function assertFalse () {
+    if [ $(correctNumberOfArgs $# 1) = "true" ]
+    then
+        lineNo=$(echo $(caller) | awk '{print $1}')
+        TestCaseCallingAssert=${FUNCNAME[1]}
+        eval [ $1 ]
+        testResult=$?
+        if [ "$testResult" = "1" ]
+            then
+            echo "LineNo $lineNo: Passed - $TestCaseCallingAssert"
+            incrementPassedTests
+        else
+            echo "LineNo $lineNo: $TestCaseCallingAssert: assertFalse() failed. Boolean Expression [ $1 ] expected to evaluate as false, evaluated as true."
+            incrementFailedTests
+        fi
+    else echo "LineNo $lineNo: $TestCaseCallingAssert: assertFalse() failed. Expected one argument."
+      incrementFailedTests
+    fi
+}
+
+function assertNotNull () {
+    if [ $(correctNumberOfArgs $# 1) = "true" ]
+    then
+        lineNo=$(echo $(caller) | awk '{print $1}')
+        TestCaseCallingAssert=${FUNCNAME[1]}
+        if [ "${1}" != "" ]
+            then
+            echo "LineNo $lineNo: $TestCaseCallingAssert: Passed"
+            incrementPassedTests
+        else
+            echo "LineNo $lineNo: $TestCaseCallingAssert: assertNotSame() failed. Expected not empty string"
+            incrementFailedTests
+        fi
+    else echo "LineNo $lineNo: $TestCaseCallingAssert: assertNotSame() failed. Expected one argument."
+      incrementFailedTests
+    fi
+}
+
+# Helper functions
+
+function incrementPassedTests () {
+    PASSED_TESTS=$(($PASSED_TESTS+1))
+    incrementTotalTests
+}
+
+function incrementFailedTests () {
+    FAILED_TESTS=$(($FAILED_TESTS+1))
+    incrementTotalTests
+}
+
+function incrementTotalTests () {
+    TOTAL_TESTS=$(($TOTAL_TESTS+1))
+}
+
+
+
+function beginUnitTests () {
+    clear
+    echo ""
+    echo "$0:"
+    echo ""
+    echo "--- Begin Unit Tests ---"
+    echo ""
+}
+
+function endUnitTests () {
+    echo ""
+    echo "--- End Unit Tests ---"
+    echo ""
+    echo "RESULTS: $PASSED_TESTS tests passed.  $FAILED_TESTS tests failed.  $TOTAL_TESTS tests total."
+    echo ""
+}
+
+function runUnitTests () {
+    testNames=$(grep "^function" $0 | awk '{print $2}')
+    testNamesArray=($testNames)
+    beginUnitTests
+    for testCase in "${testNamesArray[@]}"
+    do
+        :
+        eval $testCase
+    done
+    endUnitTests
+}
+
+function correctNumberOfArgs () {
+    if [ $1 = $2 ]
+        then
+            echo "true"
+    else
+        echo "false"
+    fi
+}
+
+function numericCompare () {
+    awk -v n1=$1 -v n2=$2 \ 'BEGIN { print (n1 == n2) ? "true" : "false" }' 2>/dev/null
+}
