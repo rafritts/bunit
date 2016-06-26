@@ -1,4 +1,4 @@
-# BashScriptTestingLibrary (BSTL)
+# Bash Script Testing Library (BSTL)
 ...is a unit testing framework for Shell scripts - namely Bash.  
 
 This is a very light weight unit testing library for Bash scripts.  It functions almost identically to Java's JUnit.
