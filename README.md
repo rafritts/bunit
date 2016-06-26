@@ -28,11 +28,19 @@ function testMyProcessStarted () {
 } 
 ```
 
-
 At the very bottom of your unit test suite, you need to call the function `runUnitTests`.
 
+When you are ready to run your unit test suite, simply run it as you would any other script.
+
+`./MyUnitTestSuite.ut`
+
+Or you can run it verbosely using the `-v` flag, which will print out all test case results, even if they pass.  
+
+`./MyUnitTestSuite.ut -v`
+
+
 ### Functions included in the BSTL
-The BSTL includes all the assert functions found in Java's JUnit.
+The BSTL includes most the assert functions found in Java's JUnit.
 
 Specifically:
 
@@ -56,4 +64,12 @@ Specifically:
 
 3. You must include quotes around conditional expressions.  These expressions can be anything that can be evaluated in an if statement condition.  Example: `"-f someFile.txt"`
 
-4. Please see the unit tests file `BashScriptTestingLibraryUnitTests.ut` for more examples.  
+4. The extension `.shl` is an extension I perfer to give library shell scripts.  It stands for `.shellLibrary`. 
+
+5. I prefer to give the extension `.ut` to my unit test suites, just so that it is plainly obvious at a glace of what the file is.  
+
+6. Both of the above extensions are meaningless, and you can change them to be whatever you like.
+
+7. Please see the unit tests file `BashScriptTestingLibraryUnitTests.ut` for more examples.  
+
+### Please remember this is a work in progress!
