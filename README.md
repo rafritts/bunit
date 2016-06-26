@@ -17,10 +17,15 @@ Note, as of now, any functions inside of the unit test suite, will be executed, 
 The BSTL includes all the assert functions found in Java's JUnit.
 
 Specifically:
+
 assertEquals expected actual
+
 assertNotSame expected actual
+
 assertNull actual #note that null in this case is empty string ("")
+
 assertTrue "condition"
+
 assertFalse "condition"
 
 Please see the unit tests file "BashScriptTestingLibraryUnitTests.ut" for more examples.  
