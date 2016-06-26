@@ -5,6 +5,8 @@ PASSED_TESTS=0
 FAILED_TESTS=0
 TOTAL_TESTS=0
 
+[[ $1 = "-v" ]] && VERBOSE_MODE="true" || VERBOSE_MODE="false"
+
 # Assert Functions
 
 function assertEquals () {
@@ -14,7 +16,7 @@ function assertEquals () {
         TestCaseCallingAssert=${FUNCNAME[1]}
         if [ "${1}" = "${2}" ] || [ "$(numericCompare "$1" "$2")" = "true" ]
             then
-            echo "Line $Line: Passed - $TestCaseCallingAssert"
+            [[ "$VERBOSE_MODE" = "true" ]] && echo "Line $Line: Passed - $TestCaseCallingAssert" 
             incrementPassedTests
         else
             echo "Line $Line: $TestCaseCallingAssert: assertEquals() failed. Expected \"$1\", but got \"$2\"."
@@ -33,7 +35,7 @@ function assertNotSame () {
         TestCaseCallingAssert=${FUNCNAME[1]}
         if [ "${1}" != "${2}" ]
             then
-            echo "Line $Line: Passed - $TestCaseCallingAssert"
+            [[ $VERBOSE_MODE = "true" ]] && echo "Line $Line: Passed - $TestCaseCallingAssert"
             incrementPassedTests
         else
             echo "Line $Line: $TestCaseCallingAssert: assertNotSame() failed. Expected not \"$1\", but got \"$2\"."
@@ -49,7 +51,7 @@ function assertNull () {
         TestCaseCallingAssert=${FUNCNAME[1]}
         if [ "${1}" = "" ]
         then
-            echo "Line $Line: Passed - $TestCaseCallingAssert"
+            [[ $VERBOSE_MODE = "true" ]] && echo "Line $Line: Passed - $TestCaseCallingAssert"
             incrementPassedTests
         else
             echo "Line $Line: $TestCaseCallingAssert: assertNull() failed. Expected empty string, but got \"$1\"."
@@ -66,7 +68,7 @@ function assertTrue () {
         testResult=$?
         if [ "$testResult" = "0" ]
             then
-            echo "Line $Line: Passed - $TestCaseCallingAssert"
+            [[ $VERBOSE_MODE = "true" ]] && echo "Line $Line: Passed - $TestCaseCallingAssert"
             incrementPassedTests
         else
             echo "Line $Line: $TestCaseCallingAssert: assertTrue() failed. Boolean Expression [ $1 ] expected to evaluate as true, evaluated as false."
@@ -87,7 +89,7 @@ function assertFalse () {
         testResult=$?
         if [ "$testResult" = "1" ]
             then
-            echo "Line $Line: Passed - $TestCaseCallingAssert"
+            [[ $VERBOSE_MODE = "true" ]] && echo "Line $Line: Passed - $TestCaseCallingAssert"
             incrementPassedTests
         else
             echo "Line $Line: $TestCaseCallingAssert: assertFalse() failed. Boolean Expression [ $1 ] expected to evaluate as false, evaluated as true."
@@ -105,7 +107,7 @@ function assertNotNull () {
         TestCaseCallingAssert=${FUNCNAME[1]}
         if [ "${1}" != "" ]
             then
-            echo "Line $Line: $TestCaseCallingAssert: Passed"
+            [[ $VERBOSE_MODE = "true" ]] && echo "Line $Line: $TestCaseCallingAssert: Passed"
             incrementPassedTests
         else
             echo "Line $Line: $TestCaseCallingAssert: assertNotSame() failed. Expected not empty string"
@@ -139,13 +141,15 @@ function beginUnitTests () {
     echo ""
     echo "$0:"
     echo ""
-    echo "--- Begin Unit Tests ---"
-    echo ""
 }
 
 function endUnitTests () {
+
+    if [ $FAILED_TESTS = 0 ] && [ $VERBOSE_MODE = "false" ]
+        then
+            echo "All unit tests passed."
+    fi
     echo ""
-    echo "--- End Unit Tests ---"
     echo ""
     echo "RESULTS: $PASSED_TESTS tests passed.  $FAILED_TESTS tests failed.  $TOTAL_TESTS tests total."
 }
