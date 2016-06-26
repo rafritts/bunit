@@ -14,7 +14,11 @@ Simply add the following lines underneath your shebang (#!/bin/bash) in your uni
 
 Next, you can create any such test you like such as:
 
-function t
+```
+function testAssertEqualsWithStrings () {
+    assertEquals "something" "something"
+} 
+```
 
 **NOTE: as of now, any functions inside of the unit test suite, will be executed, no matter what thier name is.**
 
