@@ -13,7 +13,7 @@ function testAssertEqualsWithStrings () {
 
 
 function testAssertEqualsWithIntegers () {
-    assertEquals 10 10 
+    assertEquals 10 10
 } 
 
 
@@ -21,9 +21,11 @@ function testAssertEqualsWithIntegers2 () {
     assertEquals 5 $((10 - 5))
 }
 
+
 function testAssertEqualsWithIntegers3 () {
     assertEquals 1 1
 }
+
 
 function testAssertEqualsWithDoubles () {
     assertEquals 5.5 5.5
@@ -39,7 +41,7 @@ function testAssertEqualsWithArrays () {
     local array1=(1,2,3)
     local array2=(1,2,3)
     assertEquals $array1 $array2
-} 
+}
 
 
 function testAssertNotSameWithStrings () {
