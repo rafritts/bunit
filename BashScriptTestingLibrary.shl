@@ -122,13 +122,13 @@ function assertNotNull () {
 
 function runUnitTests () {
     START_TIME=$(date +%s)
-    testNames=$(grep "^function" $0 | awk '{print $2}')
+    testNames=$(grep "^function" $0 | awk '{print $2}' | cut -f 1 -d "(")
     testNamesArray=($testNames)
     beginUnitTests
     for testCase in "${testNamesArray[@]}"
     do
         :
-        eval $testCase
+        $testCase
     done
     endUnitTests
     END_TIME=$(date +%s)
@@ -140,7 +140,6 @@ function runUnitTests () {
         echo "Unit Tests failed.  Exiting Status Code 1"
         exit 1
     fi
-
 }
 
 function beginUnitTests () {
