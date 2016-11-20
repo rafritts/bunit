@@ -27,7 +27,7 @@ function assertEquals () {
         "${2}"
     )
 
-    assert 2 equals args[@] "Expected \"$1\", but got \"$2\"."
+    assert 2 equals args[@] "$#" "Expected \"$1\", but got \"$2\"." 
 }
 
 # assertNotSame callback function
@@ -48,7 +48,7 @@ function assertNotSame () {
         "${2}"
     )
 
-    assert 2 notSame args[@] "Expected not \"$1\", but got \"$2\"."
+    assert 2 notSame args[@] "$#" "Expected not \"$1\", but got \"$2\"."
 }
 
 # assertNull callback function
@@ -68,7 +68,7 @@ function assertNull () {
         "${1}"
     )
 
-    assert 1 null args[@] "Expected empty string, but got \"$1\"."
+    assert 1 null args[@] "$#" "Expected empty string, but got \"$1\"."
 }
 
 # assertTrue callback function
@@ -90,7 +90,7 @@ function assertTrue () {
         "${1}"
     )
 
-    assert 1 trueCb args[@] "Boolean Expression [ $1 ] expected to evaluate as true, evaluated as false."
+    assert 1 trueCb args[@] "$#" "Boolean Expression [ $1 ] expected to evaluate as true, evaluated as false."
 }
 
 # assertFalse callback function
@@ -112,7 +112,7 @@ function assertFalse () {
         "${1}"
     )
 
-    assert 1 falseCb args[@] "Boolean Expression [ $1 ] expected to evaluate as false, evaluated as true."
+    assert 1 falseCb args[@] "$#" "Boolean Expression [ $1 ] expected to evaluate as false, evaluated as true."
 }
 
 # assertNotNull callback function
@@ -128,7 +128,11 @@ notNull() {
 
 # Takes 1 argument and asserts if it is not an empty string
 function assertNotNull () {
-    assert 1 notNull args[@] "Expected not empty string, but got \"$1\"."
+    local args=(
+        "${1}"
+    )
+
+    assert 1 notNull args[@] "$#" "Expected not empty string, but got \"$1\"."
 }
 
 # function assertContains () {
@@ -139,18 +143,20 @@ function assertNotNull () {
 #   The correct number of arguments for the assertion callback
 #   The assertion callback function
 #   An array of arguments to be passed to the assertion callback
+#   The actual number of arguments being passed from the caller function
 #   The assertion failure message
 function assert () {
     local correct_num_of_args=${1}
     local callback=${2}
     local callback_args=${3}
-    local failure_msg=${4}
+    local actual_num_of_args=${4}
+    local failure_msg=${5}
 
     local test_case_calling_assert=${FUNCNAME[2]}
     local assert_caller_func_name=${FUNCNAME[1]}
     local line=$(echo $(caller 1) | awk '{print $1}')
 
-    if [ $(correctNumberOfArgs $(getNumberOfCallbackArgs ${callback_args}) ${correct_num_of_args}) = "true" ]; then
+    if [ $(correctNumberOfArgs ${actual_num_of_args} ${correct_num_of_args}) = "true" ]; then
         local result=$(${callback} ${callback_args})
 
         if [ ${result} = "true" ]; then
@@ -229,11 +235,6 @@ function correctNumberOfArgs () {
     else
         echo "false"
     fi
-}
-
-function getNumberOfCallbackArgs () {
-    declare -a callback_args_array=("${!1}")
-    echo ${#callback_args_array[@]}
 }
 
 function numericCompare () {

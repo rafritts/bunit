@@ -63,7 +63,7 @@ function testAssertNotSameWithArrays () {
 
 function testAssertNull () {
     nullString=""
-    assertNull $nullString
+    assertNull "$nullString"
 }
 
 
@@ -161,6 +161,25 @@ function testAssertFalseWithIntegersFailure () {
     assertFalse "10 = 10"
 }
 
+function testAssertEqualsWrongArgsNum() {
+    assertEquals "something"
+}
+
+function testAssertNotSameWrongArgsNum() {
+    assertNotSame 20
+}
+
+function testAssertNullWrongArgsNum() {
+    assertNull
+}
+
+function testAssertTrueWrongArgsNum() {
+    assertTrue
+}
+
+function testAssertFalseWrongArgsNum() {
+    assertFalse
+}
 
 function tearDown () {
     rm testFile

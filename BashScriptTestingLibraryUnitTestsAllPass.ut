@@ -61,7 +61,7 @@ function testAssertNotSameWithArrays () {
 
 function testAssertNull () {
     nullString=""
-    assertNull $nullString
+    assertNull "$nullString"
 }
 
 
