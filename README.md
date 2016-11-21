@@ -48,19 +48,21 @@ Specifically:
 
 `assertNotSame expected actual`
 
-`assertNull actual`
+`assertNull "actual"`
 
-`assertNotNull actual`
+`assertNotNull "actual"`
 
 `assertTrue "condition expression"`
 
 `assertFalse "condition expression"`
 
+`assertContains needle haystack`
+
 ### Important Notes:
 
-1. As of now, any functions declared with the keyword `function` inside of the unit test suite, will be executed, no matter what thier name is.
+1. Only functions prefixed with `test`, i.e: `function test<functionName>` inside of the unit test suite will be executed. Please refer to `BashScriptTestingLibraryUnitTests.ut` for examples.
 
-2. Null is considered to be empty string `""`
+2. Null is considered to be empty string `""`. The assertNull requires you to enclose your argument in quotes.
 
 3. You must include quotes around conditional expressions.  These expressions can be anything that can be evaluated in an if statement condition.  Example: `"-f someFile.txt"`
 

@@ -3,7 +3,7 @@
 
 source BashScriptTestingLibrary.shl
 
-function setUp () {
+function testSetup () {
     touch testFile
 }
 
@@ -91,7 +91,19 @@ function testAssertFalseWithArray () {
     assertFalse "${array1} = ${array2}" 
 }
 
-function tearDown () {
+function testAssertContainsWithString () {
+    local string="FooBar"
+    local substring="Bar"
+    assertContains $substring $string
+}
+
+function testAssertContainsWithArray () {
+    local array1=(1,2,3)
+    local num2=2
+    assertContains $num2 $array1
+}
+
+function testTeardown () {
     rm testFile
 }
 

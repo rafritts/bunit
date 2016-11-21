@@ -135,8 +135,26 @@ function assertNotNull () {
     assert 1 notNull args[@] "$#" "Expected not empty string, but got \"$1\"."
 }
 
-# function assertContains () {
-# }
+# assertContains callback function
+contains() {
+    declare -a callback_args=("${!1}")
+
+    if [[ "${callback_args[1]}" == *"${callback_args[0]}"* ]]; then
+        echo "true"
+    else
+        echo "false"
+    fi
+}
+
+# Takes 2 arguments and asserts if argument 2 is a substring of argument 1
+function assertContains () {
+    local args=(
+        "${1}"
+        "${2}"
+    )
+
+    assert 2 contains args[@] "$#" "Expected \"$2\" to contain \"$1\"." 
+}
 
 # Main function used for assertions.
 # Arguments:
@@ -176,7 +194,7 @@ function assert () {
 
 function runUnitTests () {
     START_TIME=$(date +%s)
-    testNames=$(grep "^function" $0 | awk '{print $2}' | cut -f 1 -d "(")
+    testNames=$(grep "^function test" $0 | awk '{print $2}' | cut -f 1 -d "(")
     testNamesArray=($testNames)
     beginUnitTests
     for testCase in "${testNamesArray[@]}"

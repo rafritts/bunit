@@ -3,7 +3,7 @@
 
 source BashScriptTestingLibrary.shl
 
-function setUp () {
+function testSetup () {
     touch testFile
 }
 
@@ -93,6 +93,18 @@ function testAssertFalseWithArray () {
     assertFalse "${array1} = ${array2}" 
 }
 
+function testAssertContainsWithString () {
+    local string="FooBar"
+    local substring="Bar"
+    assertContains $substring $string
+}
+
+function testAssertContainsWithArray () {
+    local array1=(1,2,3)
+    local num2=2
+    assertContains $num2 $array1
+}
+
 function testAssertEqualsWithStringsFailure () {
     assertEquals "something" "something else"
 }
@@ -161,6 +173,18 @@ function testAssertFalseWithIntegersFailure () {
     assertFalse "10 = 10"
 }
 
+function testAssertContainsWithStringsFailure () {
+    local string="FooBar"
+    local substring="BarBar"
+    assertContains $substring $string
+}
+
+function testAssertContainsWithArrayFailure () {
+    local array1=(4,5,6)
+    local num2=7
+    assertContains $num2 $array1
+}
+
 function testAssertEqualsWrongArgsNum() {
     assertEquals "something"
 }
@@ -181,7 +205,11 @@ function testAssertFalseWrongArgsNum() {
     assertFalse
 }
 
-function tearDown () {
+function testAssertContainsWrongArgsNum() {
+    assertContains "Foo"
+}
+
+function testTeardown () {
     rm testFile
 }
 
