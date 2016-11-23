@@ -9,112 +9,184 @@ TOTAL_TESTS=0
 
 # Assert Functions
 
+# assertEquals callback function
+equals() {
+    declare -a callback_args=("${!1}")
+
+    if [ "${callback_args[0]}" = "${callback_args[1]}" ] || [ "$(numericCompare "${callback_args[0]}" "${callback_args[1]}")" = "true" ]; then
+        echo "true"
+    else
+        echo "false"
+    fi
+}
+
+# Takes 2 arguments and asserts if they are equal to each other
 function assertEquals () {
-    if [ $(correctNumberOfArgs $# 2) = "true" ]
-    then
-        Line=$(echo $(caller) | awk '{print $1}')
-        TestCaseCallingAssert=${FUNCNAME[1]}
-        if [ "${1}" = "${2}" ] || [ "$(numericCompare "$1" "$2")" = "true" ]
-            then
-            [[ "$VERBOSE_MODE" = "true" ]] && echo "Line $Line: Passed - $TestCaseCallingAssert" 
-            incrementPassedTests
-        else
-            echo "Line $Line: $TestCaseCallingAssert: assertEquals() failed. Expected \"$1\", but got \"$2\"."
-            incrementFailedTests
-        fi
-    else echo "Line $Line: $TestCaseCallingAssert: assertEquals() failed. Expected two arguments."
-      incrementFailedTests
+    local args=(
+        "${1}"
+        "${2}"
+    )
+
+    assert 2 equals args[@] "$#" "Expected \"$1\", but got \"$2\"." 
+}
+
+# assertNotSame callback function
+notSame() {
+    declare -a callback_args=("${!1}")
+
+    if [ "${callback_args[0]}" != "${callback_args[1]}" ]; then
+        echo "true"
+    else
+        echo "false"
     fi
 }
 
-
+# Takes 2 arguments and asserts if they are not equal to each other
 function assertNotSame () {
-    if [ $(correctNumberOfArgs $# 2) = "true" ]
-    then
-        Line=$(echo $(caller) | awk '{print $1}')
-        TestCaseCallingAssert=${FUNCNAME[1]}
-        if [ "${1}" != "${2}" ]
-            then
-            [[ $VERBOSE_MODE = "true" ]] && echo "Line $Line: Passed - $TestCaseCallingAssert"
-            incrementPassedTests
-        else
-            echo "Line $Line: $TestCaseCallingAssert: assertNotSame() failed. Expected not \"$1\", but got \"$2\"."
-            incrementFailedTests
-        fi
-    else echo "Line $Line: $TestCaseCallingAssert: assertNotSame() failed. Expected two arguments."
-      incrementFailedTests
+    local args=(
+        "${1}"
+        "${2}"
+    )
+
+    assert 2 notSame args[@] "$#" "Expected not \"$1\", but got \"$2\"."
+}
+
+# assertNull callback function
+null() {
+    declare -a callback_args=("${!1}")
+
+    if [ "${callback_args[0]}" = "" ]; then
+        echo "true"
+    else
+        echo "false"
     fi
 }
 
+# Takes 1 argument and asserts if it is an empty string
 function assertNull () {
-        Line=$(echo $(caller) | awk '{print $1}')
-        TestCaseCallingAssert=${FUNCNAME[1]}
-        if [ "${1}" = "" ]
-        then
-            [[ $VERBOSE_MODE = "true" ]] && echo "Line $Line: Passed - $TestCaseCallingAssert"
-            incrementPassedTests
-        else
-            echo "Line $Line: $TestCaseCallingAssert: assertNull() failed. Expected empty string, but got \"$1\"."
-            incrementFailedTests
-        fi
+    local args=(
+        "${1}"
+    )
+
+    assert 1 null args[@] "$#" "Expected empty string, but got \"$1\"."
 }
 
+# assertTrue callback function
+trueCb() {
+    declare -a callback_args=("${!1}")
+    eval [ ${callback_args[0]} ]
+    testResult=$?
+
+    if [ "$testResult" = "0" ]; then
+        echo "true"
+    else
+        echo "false"
+    fi
+}
+
+# Takes 1 argument and asserts if it evaluates as true
 function assertTrue () {
-    if [ $(correctNumberOfArgs $# 1) = "true" ]
-    then
-        Line=$(echo $(caller) | awk '{print $1}')
-        TestCaseCallingAssert=${FUNCNAME[1]}
-        eval [ $1 ]
-        testResult=$?
-        if [ "$testResult" = "0" ]
-            then
-            [[ $VERBOSE_MODE = "true" ]] && echo "Line $Line: Passed - $TestCaseCallingAssert"
-            incrementPassedTests
-        else
-            echo "Line $Line: $TestCaseCallingAssert: assertTrue() failed. Boolean Expression [ $1 ] expected to evaluate as true, evaluated as false."
-            incrementFailedTests
-        fi
-    else echo "Line $Line: $TestCaseCallingAssert: assertTrue() failed. Expected one argument."
-      incrementFailedTests
+    local args=(
+        "${1}"
+    )
+
+    assert 1 trueCb args[@] "$#" "Boolean Expression [ $1 ] expected to evaluate as true, evaluated as false."
+}
+
+# assertFalse callback function
+falseCb() {
+    declare -a callback_args=("${!1}")
+    eval [ ${callback_args[0]} ]
+    testResult=$?
+
+    if [ "$testResult" = "1" ]; then
+        echo "true"
+    else
+        echo "false"
     fi
 }
 
-
+# Takes 1 argument and asserts if it evaluates as false
 function assertFalse () {
-    if [ $(correctNumberOfArgs $# 1) = "true" ]
-    then
-        Line=$(echo $(caller) | awk '{print $1}')
-        TestCaseCallingAssert=${FUNCNAME[1]}
-        eval [ $1 ]
-        testResult=$?
-        if [ "$testResult" = "1" ]
-            then
-            [[ $VERBOSE_MODE = "true" ]] && echo "Line $Line: Passed - $TestCaseCallingAssert"
-            incrementPassedTests
-        else
-            echo "Line $Line: $TestCaseCallingAssert: assertFalse() failed. Boolean Expression [ $1 ] expected to evaluate as false, evaluated as true."
-            incrementFailedTests
-        fi
-    else echo "Line $Line: $TestCaseCallingAssert: assertFalse() failed. Expected one argument."
-      incrementFailedTests
+    local args=(
+        "${1}"
+    )
+
+    assert 1 falseCb args[@] "$#" "Boolean Expression [ $1 ] expected to evaluate as false, evaluated as true."
+}
+
+# assertNotNull callback function
+notNull() {
+    declare -a callback_args=("${!1}")
+
+    if [ "${callback_args[0]}" != "" ]; then
+        echo "true"
+    else
+        echo "false"
     fi
 }
 
+# Takes 1 argument and asserts if it is not an empty string
 function assertNotNull () {
-    if [ $(correctNumberOfArgs $# 1) = "true" ]
-    then
-        Line=$(echo $(caller) | awk '{print $1}')
-        TestCaseCallingAssert=${FUNCNAME[1]}
-        if [ "${1}" != "" ]
-            then
-            [[ $VERBOSE_MODE = "true" ]] && echo "Line $Line: $TestCaseCallingAssert: Passed"
+    local args=(
+        "${1}"
+    )
+
+    assert 1 notNull args[@] "$#" "Expected not empty string, but got \"$1\"."
+}
+
+# assertContains callback function
+contains() {
+    declare -a callback_args=("${!1}")
+
+    if [[ "${callback_args[1]}" == *"${callback_args[0]}"* ]]; then
+        echo "true"
+    else
+        echo "false"
+    fi
+}
+
+# Takes 2 arguments and asserts if argument 2 is a substring of argument 1
+function assertContains () {
+    local args=(
+        "${1}"
+        "${2}"
+    )
+
+    assert 2 contains args[@] "$#" "Expected \"$2\" to contain \"$1\"." 
+}
+
+# Main function used for assertions.
+# Arguments:
+#   The correct number of arguments for the assertion callback
+#   The assertion callback function
+#   An array of arguments to be passed to the assertion callback
+#   The actual number of arguments being passed from the caller function
+#   The assertion failure message
+function assert () {
+    local correct_num_of_args=${1}
+    local callback=${2}
+    local callback_args=${3}
+    local actual_num_of_args=${4}
+    local failure_msg=${5}
+
+    local test_case_calling_assert=${FUNCNAME[2]}
+    local assert_caller_func_name=${FUNCNAME[1]}
+    local line=$(echo $(caller 1) | awk '{print $1}')
+
+    if [ $(correctNumberOfArgs ${actual_num_of_args} ${correct_num_of_args}) = "true" ]; then
+        local result=$(${callback} ${callback_args})
+
+        if [ ${result} = "true" ]; then
+            [[ "$VERBOSE_MODE" = "true" ]] && echo "Line ${line}: Passed - ${test_case_calling_assert}" 
             incrementPassedTests
         else
-            echo "Line $Line: $TestCaseCallingAssert: assertNotSame() failed. Expected not empty string"
+            echo "Line ${line}: ${test_case_calling_assert}: ${assert_caller_func_name}() failed. $failure_msg."
             incrementFailedTests
         fi
-    else echo "Line $Line: $TestCaseCallingAssert: assertNotSame() failed. Expected one argument."
-      incrementFailedTests
+    else
+        echo "Line $line: $test_case_calling_assert: ${assert_caller_func_name}() failed. Expected ${correct_num_of_args} argument(s)."
+        incrementFailedTests
     fi
 }
 
@@ -122,13 +194,13 @@ function assertNotNull () {
 
 function runUnitTests () {
     START_TIME=$(date +%s)
-    testNames=$(grep "^function" $0 | awk '{print $2}')
+    testNames=$(grep "^function test" $0 | awk '{print $2}' | cut -f 1 -d "(")
     testNamesArray=($testNames)
     beginUnitTests
     for testCase in "${testNamesArray[@]}"
     do
         :
-        eval $testCase
+        $testCase
     done
     endUnitTests
     END_TIME=$(date +%s)
@@ -140,7 +212,6 @@ function runUnitTests () {
         echo "Unit Tests failed.  Exiting Status Code 1"
         exit 1
     fi
-
 }
 
 function beginUnitTests () {
