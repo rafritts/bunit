@@ -209,8 +209,7 @@ function runUnitTests () {
 
     if [ "$FAILED_TESTS" -gt "0" ]
     then
-        echo "Unit Tests failed.  Exiting Status Code 1"
-        exit 1
+        echo "Unit Tests failed."
     fi
 }
 
