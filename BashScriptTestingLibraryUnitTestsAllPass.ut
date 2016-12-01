@@ -1,5 +1,4 @@
 #!/bin/bash
-# Written by Ryan Fritts - Questions, comments, and criticisms welcome.  
 
 source BashScriptTestingLibrary.shl
 

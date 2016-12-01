@@ -1,5 +1,4 @@
 #!/bin/bash
-# Written by Ryan Fritts - Questions, comments, and criticisms welcome.
 
 PASSED_TESTS=0
 FAILED_TESTS=0
