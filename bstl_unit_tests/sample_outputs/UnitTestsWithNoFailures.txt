@@ -1,0 +1,7 @@
+./UnitTestsWithNoFailures.ut:
+
+All unit tests passed.
+
+
+RESULTS: 18 tests passed.  0 tests failed.  18 tests total.
+Execution completed in 1 second(s)...

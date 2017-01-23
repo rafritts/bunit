@@ -1,0 +1,47 @@
+./UnitTestsWithIntentionalFailures.ut:
+
+Line 10: Passed - testAssertEqualsWithStrings
+Line 15: Passed - testAssertEqualsWithIntegers
+Line 20: Passed - testAssertEqualsWithIntegers2
+Line 25: Passed - testAssertEqualsWithIntegers3
+Line 30: Passed - testAssertEqualsWithDoubles
+Line 35: Passed - testAssertEqualsWithDoubles2
+Line 42: Passed - testAssertEqualsWithArrays
+Line 47: Passed - testAssertNotEqualsWithStrings
+Line 52: Passed - testAssertNotEqualsWithIntegers
+Line 59: Passed - testAssertNotEqualsWithArrays
+Line 65: Passed - testAssertNull
+Line 70: Passed - testAssertTrueWithFilename
+Line 75: Passed - testAssertTrueWithIntegers
+Line 80: Passed - testAssertFalseWithIntegers
+Line 85: Passed - testAssertFalseWithFilename
+Line 92: Passed - testAssertFalseWithArray
+Line 98: Passed - testAssertContainsWithString
+Line 104: Passed - testAssertContainsWithArray
+Line 108: testAssertEqualsWithStringsFailure: assertEquals() failed. Expected "something", but got "something else".
+Line 113: testAssertEqualsWithIntegersFailure: assertEquals() failed. Expected "5", but got "10".
+Line 120: testAssertEqualsWithArraysFailure: assertEquals() failed. Expected "1,2,3", but got "4,5,6".
+Line 125: testAssertNotEqualsWithIntegersFailure: assertNotEquals() failed. Expected not "5", but got "5".
+Line 130: testAssertNotEqualsWithStringsFailure: assertNotEquals() failed. Expected not "same", but got "same".
+Line 137: testAssertNotEqualsWithArrayFailure: assertNotEquals() failed. Expected not "1,2,3", but got "1,2,3".
+Line 142: testAssertNullWithIntegerFailure: assertNull() failed. Expected empty string, but got "5".
+Line 147: testAssertNullWithStringFailure: assertNull() failed. Expected empty string, but got "something".
+Line 153: testAssertNullWithArrayFailure: assertNull() failed. Expected empty string, but got "1,2,3".
+Line 158: testAssertTrueWithFilenameFailure: assertTrue() failed. Boolean Expression [ -f "testFile2" ] expected to evaluate as true, evaluated as false.
+Line 163: testAssertTrueWithIntegersFailure: assertTrue() failed. Boolean Expression [ 10 = 5 ] expected to evaluate as true, evaluated as false.
+Line 168: testAssertFalseWithFilenameFailure: assertFalse() failed. Boolean Expression [ -f "testFile" ] expected to evaluate as false, evaluated as true.
+Line 172: testAssertFalseWithIntegersFailure: assertFalse() failed. Boolean Expression [ 10 = 10 ] expected to evaluate as false, evaluated as true.
+Line 178: testAssertContainsWithStringsFailure: assertContains() failed. Expected "FooBar" to contain "BarBar".
+Line 184: testAssertContainsWithArrayFailure: assertContains() failed. Expected "4,5,6" to contain "7".
+Line 188: testAssertEqualsWrongArgsNum: assertEquals() failed. Expected 2 argument(s).
+Line 192: testAssertNotEqualsWrongArgsNum: assertNotEquals() failed. Expected 2 argument(s).
+Line 196: testAssertNullWrongArgsNum: assertNull() failed. Expected 1 argument(s).
+Line 200: testAssertTrueWrongArgsNum: assertTrue() failed. Expected 1 argument(s).
+Line 204: testAssertFalseWrongArgsNum: assertFalse() failed. Expected 1 argument(s).
+Line 208: testAssertContainsWrongArgsNum: assertContains() failed. Expected 2 argument(s).
+
+
+RESULTS: 18 tests passed.  21 tests failed.  39 tests total.
+Execution completed in 1 second(s)...
+
+Unit Tests failed.  Exiting Status Code 1
