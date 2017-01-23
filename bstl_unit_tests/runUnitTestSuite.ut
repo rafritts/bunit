@@ -1,0 +1,21 @@
+#!/bin/bash
+
+
+# This is experimental! Use something like this at your own risk
+
+
+source ../BashScriptTestingLibrary.shl
+
+function testRunUnitTestSuite () {
+    ./UnitTestsWithIntentionalFailures.ut
+    ./UnitTestsWithNoFailures.ut
+    ./UnitTestsWithIntentionalFailures.ut -v
+    ./UnitTestsWithNoFailures.ut -v
+    clear
+    ./UnitTestsWithIntentionalFailures.ut -c
+    ./UnitTestsWithNoFailures.ut -c
+}
+
+runUnitTests
+
+

@@ -1,11 +1,11 @@
 #!/bin/bash
-# Written by Ryan Fritts - Questions, comments, and criticisms welcome.  
 
-source BashScriptTestingLibrary.shl
+source ../BashScriptTestingLibrary.shl
 
 function testSetup () {
     touch testFile
 }
+
 
 function testAssertEqualsWithStrings () {
     assertEquals "something" "something"
@@ -21,9 +21,11 @@ function testAssertEqualsWithIntegers2 () {
     assertEquals 5 $((10 - 5))
 }
 
+
 function testAssertEqualsWithIntegers3 () {
     assertEquals 1 1
 }
+
 
 function testAssertEqualsWithDoubles () {
     assertEquals 5.5 5.5
@@ -42,20 +44,20 @@ function testAssertEqualsWithArrays () {
 } 
 
 
-function testAssertNotSameWithStrings () {
-    assertNotSame "something" "something else"
+function testAssertNotEqualsWithStrings () {
+    assertNotEquals "something" "something else"
 }
 
 
-function testAssertNotSameWithIntegers () {
-    assertNotSame 5 6
+function testAssertNotEqualsWithIntegers () {
+    assertNotEquals 5 6
 }
 
 
-function testAssertNotSameWithArrays () {
+function testAssertNotEqualsWithArrays () {
     local array1=(1,2,3)
     local array2=(4,5,6)
-    assertNotSame $array1 $array2 
+    assertNotEquals $array1 $array2 
 }
 
 
@@ -91,17 +93,20 @@ function testAssertFalseWithArray () {
     assertFalse "${array1} = ${array2}" 
 }
 
+
 function testAssertContainsWithString () {
     local string="FooBar"
     local substring="Bar"
     assertContains $substring $string
 }
 
+
 function testAssertContainsWithArray () {
     local array1=(1,2,3)
     local num2=2
     assertContains $num2 $array1
 }
+
 
 function testTeardown () {
     rm testFile

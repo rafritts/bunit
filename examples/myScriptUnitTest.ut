@@ -1,0 +1,27 @@
+#!/bin/bash
+
+source ../BashScriptTestingLibrary.shl
+source myScript.sh
+
+function testSetScriptVarToFive () {
+    setScriptVarToFive
+    assertEquals 5 $script_var
+}
+
+function testCreateSomeLogFile () {
+    createSomeLogFile
+    assertTrue "-f logfile.log"
+    assertEquals "Some Sample Text" "$(cat logfile.log)"
+}
+
+function testStartMyProcess () {
+    startMyProcess
+    result=$(ps -ef | grep -v "grep" | grep /bin/bash | wc -l)
+    assertTrue " $result -gt 0 "
+}
+
+function testTearDown () {
+    rm logfile.log
+}
+
+runUnitTests

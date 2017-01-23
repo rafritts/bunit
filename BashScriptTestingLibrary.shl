@@ -3,12 +3,43 @@
 passed_tests=0
 failed_tests=0
 total_tests=0
+VERBOSE_MODE="false"
+NO_SCREEN_CLEAR="false"
 
-if [[ $1 = "-v" || $1 = "--verbose" ]]; then 
-    VERBOSE_MODE="true"
-else
-    VERBOSE_MODE="false"
-fi
+function showHelp () {
+    echo "Usage:"
+    echo "  unitTestSuite.ut [options]"
+    echo ""
+    echo "Options"
+    echo "  -v  verbose mode"
+    echo "  -c  do not clear the screen before tests"
+    echo "  -h  show this help"
+    echo "  -V  show version"
+    echo ""
+}
+
+function showVersion () {
+    echo ""
+    echo "BashScriptTestingLibrary: Version 1.0.0"
+    echo ""
+}
+
+# Parse arguments
+
+while getopts "h?vcV" opt; do
+    case "$opt" in
+    h|\?)
+        showHelp
+        exit 0
+        ;;
+    v)  VERBOSE_MODE="true"
+        ;;
+    c)  NO_SCREEN_CLEAR="true"
+        ;;
+    V)  showVersion
+        ;;
+    esac
+done
 
 # Assert Functions
 
@@ -17,16 +48,15 @@ function assertEquals () {
         "${1}"
         "${2}"
     )
-
     __assert 2 __equalsCallback args[@] "$#" "Expected \"$1\", but got \"$2\"." 
 }
 
-function assertNotSame () {
+function assertNotEquals () {
     local args=(
         "${1}"
         "${2}"
     )
-    __assert 2 __notSameCallback args[@] "$#" "Expected not \"$1\", but got \"$2\"."
+    __assert 2 __notEqualsCallback args[@] "$#" "Expected not \"$1\", but got \"$2\"."
 }
 
 function assertNull () {
@@ -104,7 +134,7 @@ __equalsCallback() {
     fi
 }
 
-__notSameCallback() {
+__notEqualsCallback() {
     declare -a callback_args=("${!1}")
     if [ "${callback_args[0]}" != "${callback_args[1]}" ]; then
         echo "true"
@@ -187,7 +217,9 @@ function runUnitTests () {
 }
 
 function beginUnitTests () {
-    clear
+    if [ $NO_SCREEN_CLEAR = "false" ]; then
+        clear
+    fi
     echo ""
     echo "$0:"
     echo ""
@@ -228,3 +260,4 @@ function correctNumberOfArgs () {
 function numericCompare () {
     awk -v n1=$1 -v n2=$2 \ 'BEGIN { print (n1 == n2) ? "true" : "false" }' 2>/dev/null
 }
+
