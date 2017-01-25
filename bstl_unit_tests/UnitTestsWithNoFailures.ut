@@ -9,12 +9,12 @@ function testSetup () {
 
 function testAssertEqualsWithStrings () {
     assertEquals "something" "something"
-} 
+}
 
 
 function testAssertEqualsWithIntegers () {
-    assertEquals 10 10 
-} 
+    assertEquals 10 10
+}
 
 
 function testAssertEqualsWithIntegers2 () {
@@ -41,7 +41,7 @@ function testAssertEqualsWithArrays () {
     local array1=(1,2,3)
     local array2=(1,2,3)
     assertEquals $array1 $array2
-} 
+}
 
 
 function testAssertNotEqualsWithStrings () {
@@ -57,7 +57,7 @@ function testAssertNotEqualsWithIntegers () {
 function testAssertNotEqualsWithArrays () {
     local array1=(1,2,3)
     local array2=(4,5,6)
-    assertNotEquals $array1 $array2 
+    assertNotEquals $array1 $array2
 }
 
 
@@ -90,7 +90,7 @@ function testAssertFalseWithFilename () {
 function testAssertFalseWithArray () {
     local array1=(1,2,3)
     local array2=(4,5,6)
-    assertFalse "${array1} = ${array2}" 
+    assertFalse "${array1} = ${array2}"
 }
 
 
@@ -110,6 +110,14 @@ function testAssertContainsWithArray () {
 
 function testTeardown () {
     rm testFile
+}
+
+testNoFunctionKeyword () {
+    assertEquals "Hello" "Hello"
+}
+
+testNoFunctionKeywordNoSpace() {
+    assertEquals "Hello" "Hello"
 }
 
 runUnitTests

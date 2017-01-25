@@ -48,7 +48,7 @@ function assertEquals () {
         "${1}"
         "${2}"
     )
-    __assert 2 __equalsCallback args[@] "$#" "Expected \"$1\", but got \"$2\"." 
+    __assert 2 __equalsCallback args[@] "$#" "Expected \"$1\", but got \"$2\"."
 }
 
 function assertNotEquals () {
@@ -92,7 +92,7 @@ function assertContains () {
         "${1}"
         "${2}"
     )
-    __assert 2 __containsCallback args[@] "$#" "Expected \"$2\" to contain \"$1\"." 
+    __assert 2 __containsCallback args[@] "$#" "Expected \"$2\" to contain \"$1\"."
 }
 
 # Main assert function, DONT CALL THIS DIRECTLY!
@@ -111,7 +111,7 @@ __assert () {
         local result=$(${callback_function} ${callback_args})
 
         if [ ${result} = "true" ]; then
-            [[ "$VERBOSE_MODE" = "true" ]] && echo "Line ${line}: Passed - ${test_case_calling_assert}" 
+            [[ "$VERBOSE_MODE" = "true" ]] && echo "Line ${line}: Passed - ${test_case_calling_assert}"
             incrementPassedTests
         else
             echo "Line ${line}: ${test_case_calling_assert}: ${assert_caller_func_name}() failed. $failure_msg"
@@ -196,7 +196,7 @@ __containsCallback() {
 
 function runUnitTests () {
     START_TIME=$(date +%s)
-    test_names=$(grep "^function test" $0 | awk '{print $2}' | cut -f 1 -d "(")
+    test_names=$(grep -E '^(function )?test.*?\(' $0 | sed 's/^function //' | tr -d ' (){')
     test_names_array=($test_names)
 
     beginUnitTests
@@ -260,4 +260,3 @@ function correctNumberOfArgs () {
 function numericCompare () {
     awk -v n1=$1 -v n2=$2 \ 'BEGIN { print (n1 == n2) ? "true" : "false" }' 2>/dev/null
 }
-
