@@ -6,7 +6,7 @@
 
 source ../BashScriptTestingLibrary.shl
 
-function testRunUnitTestSuite () {
+testRunUnitTestSuite () {
     ./UnitTestsWithIntentionalFailures.ut
     ./UnitTestsWithNoFailures.ut
     ./UnitTestsWithIntentionalFailures.ut -v

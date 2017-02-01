@@ -6,7 +6,7 @@ total_tests=0
 VERBOSE_MODE="false"
 NO_SCREEN_CLEAR="false"
 
-function showHelp () {
+showHelp () {
     echo "Usage:"
     echo "  unitTestSuite.ut [options]"
     echo ""
@@ -18,7 +18,7 @@ function showHelp () {
     echo ""
 }
 
-function showVersion () {
+showVersion () {
     echo ""
     echo "BashScriptTestingLibrary: Version 1.0.0"
     echo ""
@@ -43,15 +43,15 @@ done
 
 # Assert Functions
 
-function assertEquals () {
+assertEquals () {
     local args=(
         "${1}"
         "${2}"
     )
-    __assert 2 __equalsCallback args[@] "$#" "Expected \"$1\", but got \"$2\"." 
+    __assert 2 __equalsCallback args[@] "$#" "Expected \"$1\", but got \"$2\"."
 }
 
-function assertNotEquals () {
+assertNotEquals () {
     local args=(
         "${1}"
         "${2}"
@@ -59,40 +59,40 @@ function assertNotEquals () {
     __assert 2 __notEqualsCallback args[@] "$#" "Expected not \"$1\", but got \"$2\"."
 }
 
-function assertNull () {
+assertNull () {
     local args=(
         "${1}"
     )
     __assert 1 __nullCallback args[@] "$#" "Expected empty string, but got \"$1\"."
 }
 
-function assertNotNull () {
+assertNotNull () {
     local args=(
         "${1}"
     )
     __assert 1 __notNullCallback args[@] "$#" "Expected not empty string, but got \"$1\"."
 }
 
-function assertTrue () {
+assertTrue () {
     local args=(
         "${1}"
     )
     __assert 1 __trueCallback args[@] "$#" "Boolean Expression [ $1 ] expected to evaluate as true, evaluated as false."
 }
 
-function assertFalse () {
+assertFalse () {
     local args=(
         "${1}"
     )
     __assert 1 __falseCallback args[@] "$#" "Boolean Expression [ $1 ] expected to evaluate as false, evaluated as true."
 }
 
-function assertContains () {
+assertContains () {
     local args=(
         "${1}"
         "${2}"
     )
-    __assert 2 __containsCallback args[@] "$#" "Expected \"$2\" to contain \"$1\"." 
+    __assert 2 __containsCallback args[@] "$#" "Expected \"$2\" to contain \"$1\"."
 }
 
 # Main assert function, DONT CALL THIS DIRECTLY!
@@ -111,7 +111,7 @@ __assert () {
         local result=$(${callback_function} ${callback_args})
 
         if [ ${result} = "true" ]; then
-            [[ "$VERBOSE_MODE" = "true" ]] && echo "Line ${line}: Passed - ${test_case_calling_assert}" 
+            [[ "$VERBOSE_MODE" = "true" ]] && echo "Line ${line}: Passed - ${test_case_calling_assert}"
             incrementPassedTests
         else
             echo "Line ${line}: ${test_case_calling_assert}: ${assert_caller_func_name}() failed. $failure_msg"
@@ -194,9 +194,17 @@ __containsCallback() {
 
 # Utility functions
 
-function runUnitTests () {
+runUnitTests () {
     START_TIME=$(date +%s)
-    test_names=$(grep "^function test" $0 | awk '{print $2}' | cut -f 1 -d "(")
+
+    # Explanation of the following command:
+    # grep - E               - use extended regexp
+    # ^test.*?\(             - Find any line beginning with 'test ('
+    # ^(function )?test.*?\( - Find any line beginning with 'function test ('
+    # sed 's/^function //'   - Remove the 'function' prefix from any string, if it occurs
+    # tr - d ' (){'          - Remove the trailing ' (){' characters
+    test_names=$(grep -E '^test.*?\(|^(function )?test.*?\(' $0 | sed 's/^function //' | tr -d ' (){')
+
     test_names_array=($test_names)
 
     beginUnitTests
@@ -216,7 +224,7 @@ function runUnitTests () {
     fi
 }
 
-function beginUnitTests () {
+beginUnitTests () {
     if [ $NO_SCREEN_CLEAR = "false" ]; then
         clear
     fi
@@ -225,7 +233,7 @@ function beginUnitTests () {
     echo ""
 }
 
-function endUnitTests () {
+endUnitTests () {
 
     if [ $failed_tests = 0 ] && [ $VERBOSE_MODE = "false" ]; then
         echo "All unit tests passed."
@@ -235,21 +243,21 @@ function endUnitTests () {
     echo "RESULTS: $passed_tests tests passed.  $failed_tests tests failed.  $total_tests tests total."
 }
 
-function incrementPassedTests () {
+incrementPassedTests () {
     passed_tests=$(($passed_tests+1))
     incrementTotalTests
 }
 
-function incrementFailedTests () {
+incrementFailedTests () {
     failed_tests=$(($failed_tests+1))
     incrementTotalTests
 }
 
-function incrementTotalTests () {
+incrementTotalTests () {
     total_tests=$(($total_tests+1))
 }
 
-function correctNumberOfArgs () {
+correctNumberOfArgs () {
     if [ $1 = $2 ]; then
         echo "true"
     else
@@ -257,7 +265,6 @@ function correctNumberOfArgs () {
     fi
 }
 
-function numericCompare () {
+numericCompare () {
     awk -v n1=$1 -v n2=$2 \ 'BEGIN { print (n1 == n2) ? "true" : "false" }' 2>/dev/null
 }
-

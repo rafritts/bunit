@@ -1,24 +1,24 @@
 #!/bin/bash
 
-# This script has no real purpose other than to contain functions for unit tests to call. 
+# This script has no real purpose other than to contain functions for unit tests to call.
 
 script_var=""
 
-function main () {
+main () {
     setScriptVarToFive
     createSomeLogFile
     startMyProcess
 }
 
-function setScriptVarToFive () {
+setScriptVarToFive () {
     script_var=5
 }
 
-function createSomeLogFile () {
+createSomeLogFile () {
     echo "Some Sample Text" > logfile.log
 }
 
-function startMyProcess () {
+startMyProcess () {
     /bin/bash &
 }
 
