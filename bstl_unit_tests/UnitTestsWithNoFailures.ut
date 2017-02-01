@@ -2,122 +2,114 @@
 
 source ../BashScriptTestingLibrary.shl
 
-function testSetup () {
+testSetup () {
     touch testFile
 }
 
 
-function testAssertEqualsWithStrings () {
+testAssertEqualsWithStrings () {
     assertEquals "something" "something"
 }
 
 
-function testAssertEqualsWithIntegers () {
+testAssertEqualsWithIntegers () {
     assertEquals 10 10
 }
 
 
-function testAssertEqualsWithIntegers2 () {
+testAssertEqualsWithIntegers2 () {
     assertEquals 5 $((10 - 5))
 }
 
 
-function testAssertEqualsWithIntegers3 () {
+testAssertEqualsWithIntegers3 () {
     assertEquals 1 1
 }
 
 
-function testAssertEqualsWithDoubles () {
+testAssertEqualsWithDoubles () {
     assertEquals 5.5 5.5
 }
 
 
-function testAssertEqualsWithDoubles2 () {
+testAssertEqualsWithDoubles2 () {
     assertEquals 5.5 5.50
 }
 
 
-function testAssertEqualsWithArrays () {
+testAssertEqualsWithArrays () {
     local array1=(1,2,3)
     local array2=(1,2,3)
     assertEquals $array1 $array2
 }
 
 
-function testAssertNotEqualsWithStrings () {
+testAssertNotEqualsWithStrings () {
     assertNotEquals "something" "something else"
 }
 
 
-function testAssertNotEqualsWithIntegers () {
+testAssertNotEqualsWithIntegers () {
     assertNotEquals 5 6
 }
 
 
-function testAssertNotEqualsWithArrays () {
+testAssertNotEqualsWithArrays () {
     local array1=(1,2,3)
     local array2=(4,5,6)
     assertNotEquals $array1 $array2
 }
 
 
-function testAssertNull () {
+testAssertNull () {
     nullString=""
     assertNull "$nullString"
 }
 
 
-function testAssertTrueWithFilename () {
+testAssertTrueWithFilename () {
     assertTrue  "-f \"testFile\""
 }
 
 
-function testAssertTrueWithIntegers () {
+testAssertTrueWithIntegers () {
     assertTrue "10 = 10"
 }
 
 
-function testAssertFalseWithIntegers () {
+testAssertFalseWithIntegers () {
     assertFalse "10 = 5"
 }
 
 
-function testAssertFalseWithFilename () {
+testAssertFalseWithFilename () {
     assertFalse  "-f \"testFile2\""
 }
 
 
-function testAssertFalseWithArray () {
+testAssertFalseWithArray () {
     local array1=(1,2,3)
     local array2=(4,5,6)
     assertFalse "${array1} = ${array2}"
 }
 
 
-function testAssertContainsWithString () {
+testAssertContainsWithString () {
     local string="FooBar"
     local substring="Bar"
     assertContains $substring $string
 }
 
 
-function testAssertContainsWithArray () {
+testAssertContainsWithArray () {
     local array1=(1,2,3)
     local num2=2
     assertContains $num2 $array1
 }
 
 
-function testTeardown () {
+testTeardown () {
     rm testFile
-}
-
-testNoFunctionKeyword () {
-    assertEquals "Hello" "Hello"
-}
-
-testNoFunctionKeywordNoSpace() {
-    assertEquals "Hello" "Hello"
 }
 
 runUnitTests
