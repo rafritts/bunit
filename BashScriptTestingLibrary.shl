@@ -196,7 +196,13 @@ __containsCallback() {
 
 runUnitTests () {
     START_TIME=$(date +%s)
-    test_names=$(grep -E '^test.*?\(' $0 | tr -d ' (){')
+    # Explanation of the following command:
+    # grep - E               - Use extended regexp
+    # ^(function )?          - Lines may start with the keyword function followed by space
+    # test.*?\(              - Match any line with 'test[anything] (', doesn't need 'function'
+    # sed 's/^function //'   - Remove the 'function ' prefix from any string, if it occurs
+    # tr - d ' (){'          - Remove the trailing ' (){' characters
+    test_names=$(grep -E '^(function )?test.*?\(' $0 | sed 's/^function //' | tr -d ' (){')
     test_names_array=($test_names)
 
     beginUnitTests
