@@ -1,6 +1,6 @@
-#!/bin/bash 
+#!/bin/bash
 
-source BashScriptTestingLibrary.shl
+source ../BashScriptTestingLibrary.shl
 
 function testSetup () {
     touch testFile
@@ -43,20 +43,20 @@ function testAssertEqualsWithArrays () {
 }
 
 
-function testAssertNotSameWithStrings () {
-    assertNotSame "something" "something else"
+function testAssertNotEqualsWithStrings () {
+    assertNotEquals "something" "something else"
 }
 
 
-function testAssertNotSameWithIntegers () {
-    assertNotSame 5 6
+function testAssertNotEqualsWithIntegers () {
+    assertNotEquals 5 6
 }
 
 
-function testAssertNotSameWithArrays () {
+function testAssertNotEqualsWithArrays () {
     local array1=(1,2,3)
     local array2=(4,5,6)
-    assertNotSame $array1 $array2 
+    assertNotEquals $array1 $array2 
 }
 
 
@@ -121,20 +121,20 @@ function testAssertEqualsWithArraysFailure () {
 }
 
 
-function testAssertNotSameWithIntegersFailure () {
-    assertNotSame 5 5
+function testAssertNotEqualsWithIntegersFailure () {
+    assertNotEquals 5 5
 }
 
 
-function testAssertNotSameWithStringsFailure () {
-    assertNotSame "same" "same"
+function testAssertNotEqualsWithStringsFailure () {
+    assertNotEquals "same" "same"
 }
 
 
-function testAssertNotSameWithArrayFailure () {
+function testAssertNotEqualsWithArrayFailure () {
     local array1=(1,2,3)
     local array2=(1,2,3)
-    assertNotSame $array1 $array2
+    assertNotEquals $array1 $array2
 }
 
 
@@ -188,8 +188,8 @@ function testAssertEqualsWrongArgsNum() {
     assertEquals "something"
 }
 
-function testAssertNotSameWrongArgsNum() {
-    assertNotSame 20
+function testAssertNotEqualsWrongArgsNum() {
+    assertNotEquals 20
 }
 
 function testAssertNullWrongArgsNum() {
