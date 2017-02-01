@@ -107,6 +107,9 @@ testAssertContainsWithArray () {
     assertContains $num2 $array1
 }
 
+function testAssertEqualsWithStringsFunction() {
+    assertEquals "something" "something"
+}
 
 testTeardown () {
     rm testFile

@@ -208,9 +208,12 @@ testAssertContainsWrongArgsNum() {
     assertContains "Foo"
 }
 
+function testAssertNotEqualsWithStringsFunction() {
+    assertEquals "something" "something else"
+}
+
 testTeardown () {
     rm testFile
 }
-
 
 runUnitTests
