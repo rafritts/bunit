@@ -11,7 +11,7 @@ showHelp () {
     echo "  unitTestSuite.ut [options]"
     echo ""
     echo "Options"
-    echo "  -v  verbose mode"
+    echo "  -v  show output of tests"
     echo "  -c  do not clear the screen before tests"
     echo "  -h  show this help"
     echo "  -V  show version"
@@ -20,7 +20,7 @@ showHelp () {
 
 showVersion () {
     echo ""
-    echo "BashScriptTestingLibrary: Version 1.0.0"
+    echo "BashScriptTestingLibrary: Version 1.0.1"
     echo ""
 }
 
@@ -213,9 +213,6 @@ runUnitTests () {
     done
     endUnitTests
 
-    END_TIME=$(date +%s)
-    echo "Execution completed in $(($END_TIME - $START_TIME)) second(s)..."
-    echo ""
     if [ "$failed_tests" -gt "0" ]; then
         echo "Unit Tests failed.  Exiting Status Code 1"
         exit 1
@@ -223,22 +220,22 @@ runUnitTests () {
 }
 
 beginUnitTests () {
-    if [ $NO_SCREEN_CLEAR = "false" ]; then
+    if [ $VERBOSE_MODE = "true" ] && [ $NO_SCREEN_CLEAR = "false" ]; then
         clear
+        echo ""
+        echo "$0:"
+    echo ""
     fi
-    echo ""
-    echo "$0:"
-    echo ""
 }
 
 endUnitTests () {
-
-    if [ $failed_tests = 0 ] && [ $VERBOSE_MODE = "false" ]; then
-        echo "All unit tests passed."
+    if [ $failed_tests -gt "0" ] || [ $VERBOSE_MODE = "true" ]; then
+        END_TIME=$(date +%s)
+        echo ""
+        echo "RESULTS: $passed_tests tests passed.  $failed_tests tests failed.  $total_tests tests total."
+        echo "Execution completed in $(($END_TIME - $START_TIME)) second(s)..."
+        echo ""
     fi
-    echo ""
-    echo ""
-    echo "RESULTS: $passed_tests tests passed.  $failed_tests tests failed.  $total_tests tests total."
 }
 
 incrementPassedTests () {
