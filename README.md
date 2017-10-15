@@ -84,7 +84,7 @@ assertContains needle haystack
 
 -----
 
-### Important Notes:
+### Notes:
 
 1. Only functions prefixed with `test`, i.e: `test<functionName>` inside of the unit test suite will be executed by `runUnitTests`.
 
@@ -98,7 +98,7 @@ assertContains needle haystack
 
 6. Both of the above extensions are meaningless from a linux perspective, so you can change them to be whatever you like.
 
-7. If all of your unit tests pass, and you did not run the script with the verbose flag, you will simply see a success message.
+7. If all of your unit tests pass, and you did not run the script with the verbose flag, you will see no output at all.
 
 8. If any of your unit tests fail, the script will exit after all tests have run, with a status code of 1.
 
