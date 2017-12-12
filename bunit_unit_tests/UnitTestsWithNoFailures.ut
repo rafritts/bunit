@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source ../BashScriptTestingLibrary.shl
+source ../bunit.shl
 
 testSetup () {
     touch testFile

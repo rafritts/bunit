@@ -4,7 +4,7 @@
 # This is experimental! Use something like this at your own risk
 
 
-source ../BashScriptTestingLibrary.shl
+source ../bunit.shl
 
 testRunUnitTestSuite () {
     ./UnitTestsWithIntentionalFailures.ut

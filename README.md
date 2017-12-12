@@ -1,16 +1,16 @@
-# Bash Script Testing Library (BSTL)
+# bunit
 ...is a unit testing framework for Shell scripts - namely Bash.
 
 This is a very light weight (as in one file) unit testing library for Bash scripts.  It functions similarly to Java's JUnit.
 
-You do not need to touch any of your shell scripts to run unit tests against it.  That is to say, that your original source code does not need to know about the BSTL in order for the unit tests to work.
+You do not need to touch any of your shell scripts to run unit tests against it.  That is to say, that your original source code does not need to know about bunit in order for the unit tests to work.
 
 -----
 
 ### How to use:
 Simply add the following lines underneath your shebang (`#!/bin/bash`) in your unit test file.
 
-`source /../BashScriptTestingLibrary.shl` where it points to the location of the BSTL on your local machine.
+`source /../bunit.shl` where it points to the location of the bunit script on your local machine.
 
 `source /../ScriptToTest.sh`  where ScriptToTest.sh is the original script you wanted to create unit tests for.
 
@@ -19,7 +19,7 @@ Next, you can create any test case you like, such as:
 ```
 testScriptVariableEquals5 () {
     someScriptFunctionThatSetsScriptVarToFive
-    assertEquals $ScriptVar 5
+    assertEquals "$ScriptVar" 5
 }
 ```
 
@@ -53,7 +53,7 @@ Your unit test suite is a shell script! Therefore, if you run a dangerous comman
 
 ```
 testCanDeleteHomeDirectory() {
-    rm -rf ~
+    rm -rf ~/
     assertTrue " ! -d ~ "
 }
 ```
@@ -61,8 +61,8 @@ This will absolutely delete your home directory and the assertTrue function will
 
 -----
 
-### Functions included in the BSTL:
-The BSTL includes most the assert functions found in Java's JUnit.
+### Functions included in bunit:
+bunit includes most the assert functions found in Java's JUnit.
 
 Specifically:
 
@@ -84,9 +84,9 @@ assertContains needle haystack
 
 -----
 
-### Important Notes:
+### Notes:
 
-1. Only functions prefixed with `test`, i.e: `test<functionName>` inside of the unit test suite will be executed.
+1. Only functions prefixed with `test`, i.e: `test<functionName>` inside of the unit test suite will be executed by `runUnitTests`.
 
 2. Null is considered to be empty string `""`. The assertNull requires you to enclose your argument in quotes.
 
@@ -98,7 +98,7 @@ assertContains needle haystack
 
 6. Both of the above extensions are meaningless from a linux perspective, so you can change them to be whatever you like.
 
-7. If all of your unit tests pass, and you did not run the script with the verbose flag, you will simply see a success message.
+7. If all of your unit tests pass, and you did not run the script with the verbose flag, you will see no output at all.
 
 8. If any of your unit tests fail, the script will exit after all tests have run, with a status code of 1.
 
@@ -109,7 +109,7 @@ files or directories that you are intentionally trying to delete.  This probably
 
 11. You can change the name of `testSetup()` and `testTearDown()`.  They are not hard coded.  Refer to point #1.
 
-12. Please see the unit tests in `bstl_unit_tests` and in `examples` for more examples.
+12. Please see the unit tests in `bunit_unit_tests` and in `examples` for more examples.
 
 -----
 
