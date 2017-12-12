@@ -1,0 +1,18 @@
+language: bash
+
+# Use container-based infrastructure for quicker build start-up
+sudo: false
+
+addons:
+  apt:
+    sources:
+    - debian-sid    # Grab shellcheck from the Debian repo
+    packages:
+    - shellcheck
+
+script:
+ - bash -c 'shopt -s globstar; shellcheck **/*.{shl,ut}'
+ - cd bunit_unit_tests && bash UnitTestsWithNoFailures.ut -v
+
+matrix:
+  fast_finish: true
