@@ -38,9 +38,9 @@ testAssertEqualsWithDoubles2 () {
 
 
 testAssertEqualsWithArrays () {
-    local array1=(1,2,3)
-    local array2=(1,2,3)
-    assertEquals $array1 $array2
+    local array1=(1 2 3)
+    local array2=(1 2 3)
+    assertEquals "${array1[*]}" "${array2[*]}"
 }
 
 
@@ -55,9 +55,9 @@ testAssertNotEqualsWithIntegers () {
 
 
 testAssertNotEqualsWithArrays () {
-    local array1=(1,2,3)
-    local array2=(4,5,6)
-    assertNotEquals $array1 $array2
+    local array1=(1 2 3)
+    local array2=(4 5 6)
+    assertNotEquals "${array1[*]}" "${array2[*]}"
 }
 
 
@@ -88,8 +88,10 @@ testAssertFalseWithFilename () {
 
 
 testAssertFalseWithArray () {
-    local array1=(1,2,3)
-    local array2=(4,5,6)
+    local array1=(1 2 3)
+    local array2=(4 5 6)
+    # shellcheck disable=SC2128
+    # We are comparing the actual arrays, not just the elements
     assertFalse "${array1} = ${array2}"
 }
 
@@ -102,9 +104,9 @@ testAssertContainsWithString () {
 
 
 testAssertContainsWithArray () {
-    local array1=(1,2,3)
+    local array1=(1 2 3)
     local num2=2
-    assertContains $num2 $array1
+    assertContains $num2 "${array1[*]}"
 }
 
 function testAssertEqualsWithStringsFunction() {

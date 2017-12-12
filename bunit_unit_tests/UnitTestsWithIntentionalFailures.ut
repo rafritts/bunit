@@ -37,9 +37,9 @@ testAssertEqualsWithDoubles2 () {
 
 
 testAssertEqualsWithArrays () {
-    local array1=(1,2,3)
-    local array2=(1,2,3)
-    assertEquals $array1 $array2
+    local array1=(1 2 3)
+    local array2=(1 2 3)
+    assertEquals "${array1[*]}" "${array2[*]}"
 }
 
 
@@ -54,9 +54,9 @@ testAssertNotEqualsWithIntegers () {
 
 
 testAssertNotEqualsWithArrays () {
-    local array1=(1,2,3)
-    local array2=(4,5,6)
-    assertNotEquals $array1 $array2
+    local array1=(1 2 3)
+    local array2=(4 5 6)
+    assertNotEquals "${array1[*]}" "${array2[*]}"
 }
 
 
@@ -87,8 +87,10 @@ testAssertFalseWithFilename () {
 
 
 testAssertFalseWithArray () {
-    local array1=(1,2,3)
-    local array2=(4,5,6)
+    local array1=(1 2 3)
+    local array2=(4 5 6)
+    # shellcheck disable=SC2128
+    # We are comparing the actual arrays, not just the elements
     assertFalse "${array1} = ${array2}"
 }
 
@@ -99,9 +101,9 @@ testAssertContainsWithString () {
 }
 
 testAssertContainsWithArray () {
-    local array1=(1,2,3)
+    local array1=(1 2 3)
     local num2=2
-    assertContains $num2 $array1
+    assertContains $num2 "${array1[*]}"
 }
 
 testAssertEqualsWithStringsFailure () {
@@ -115,9 +117,9 @@ testAssertEqualsWithIntegersFailure () {
 
 
 testAssertEqualsWithArraysFailure () {
-    local array1=(1,2,3)
-    local array2=(4,5,6)
-    assertEquals $array1 $array2
+    local array1=(1 2 3)
+    local array2=(4 5 6)
+    assertEquals "${array1[*]}" "${array2[*]}"
 }
 
 
@@ -132,9 +134,9 @@ testAssertNotEqualsWithStringsFailure () {
 
 
 testAssertNotEqualsWithArrayFailure () {
-    local array1=(1,2,3)
-    local array2=(1,2,3)
-    assertNotEquals $array1 $array2
+    local array1=(1 2 3)
+    local array2=(1 2 3)
+    assertNotEquals "${array1[*]}" "${array2[*]}"
 }
 
 
@@ -149,8 +151,8 @@ testAssertNullWithStringFailure () {
 
 
 testAssertNullWithArrayFailure () {
-    local array1=(1,2,3)
-    assertNull $array1
+    local array1=(1 2 3)
+    assertNull "${array1[*]}"
 }
 
 
@@ -179,9 +181,9 @@ testAssertContainsWithStringsFailure () {
 }
 
 testAssertContainsWithArrayFailure () {
-    local array1=(4,5,6)
+    local array1=(4 5 6)
     local num2=7
-    assertContains $num2 $array1
+    assertContains $num2 "${array1[*]}"
 }
 
 testAssertEqualsWrongArgsNum() {
