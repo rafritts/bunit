@@ -11,7 +11,7 @@ addons:
     - shellcheck
 
 script:
- - bash -c 'shopt -s globstar; shellcheck **/*.{shl,ut}'
+ - bash -c 'shopt -s globstar; shellcheck **/*.shl; shellcheck ./bunit_unit_tests/*.ut'
  - cd bunit_unit_tests && bash UnitTestsWithNoFailures.ut -v
 
 matrix:
