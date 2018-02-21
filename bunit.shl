@@ -6,6 +6,10 @@ total_tests=0
 VERBOSE_MODE="false"
 NO_SCREEN_CLEAR="false"
 
+COLOR_RED='\033[0;31m'
+COLOR_GREEN='\033[0;32m'
+NO_COLOR='\033[0m'
+
 showHelp () {
     echo "Usage:"
     echo "  unitTestSuite.ut [options]"
@@ -95,6 +99,14 @@ assertContains () {
     __assert 2 __containsCallback args[@] "$#" "Expected \"$2\" to contain \"$1\"."
 }
 
+__logError () {
+  echo -e "$COLOR_RED$1$NO_COLOR"
+}
+
+__logSuccess () {
+  echo -e "$COLOR_GREEN$1$NO_COLOR"
+}
+
 # Main assert function, DONT CALL THIS DIRECTLY!
 __assert () {
     local correct_num_of_args=${1}
@@ -111,14 +123,14 @@ __assert () {
         local result=$(${callback_function} ${callback_args})
 
         if [ ${result} = "true" ]; then
-            [[ "$VERBOSE_MODE" = "true" ]] && echo "Line ${line}: Passed - ${test_case_calling_assert}"
+            [[ "$VERBOSE_MODE" = "true" ]] && __logSuccess "Line ${line}: Passed - ${test_case_calling_assert}"
             incrementPassedTests
         else
-            echo "Line ${line}: ${test_case_calling_assert}: ${assert_caller_func_name}() failed. $failure_msg"
+            __logError "Line ${line}: ${test_case_calling_assert}: ${assert_caller_func_name}() failed. $failure_msg"
             incrementFailedTests
         fi
     else
-        echo "Line $line: $test_case_calling_assert: ${assert_caller_func_name}() failed. Expected ${correct_num_of_args} argument(s)."
+        __logError "Line $line: $test_case_calling_assert: ${assert_caller_func_name}() failed. Expected ${correct_num_of_args} argument(s)."
         incrementFailedTests
     fi
 }
@@ -233,7 +245,7 @@ endUnitTests () {
         END_TIME=$(date +%s)
         echo ""
         echo "RESULTS: $passed_tests tests passed.  $failed_tests tests failed.  $total_tests tests total."
-        echo "Execution completed in $(($END_TIME - $START_TIME)) second(s)..."
+        echo "Execution completed in $((END_TIME - START_TIME)) second(s)..."
         echo ""
     fi
 }
