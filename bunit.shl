@@ -3,8 +3,8 @@
 passed_tests=0
 failed_tests=0
 total_tests=0
-VERBOSE_MODE="true"
-NO_SCREEN_CLEAR="true"
+VERBOSE_MODE="false"
+NO_SCREEN_CLEAR="false"
 
 COLOR_RED='\033[0;31m'
 COLOR_GREEN='\033[0;32m'
