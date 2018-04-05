@@ -88,6 +88,7 @@ assertFalse () {
 }
 
 assertContains () {
+    # shellcheck disable=SC2034
     local args=(
         "${1}"
         "${2}"
@@ -105,12 +106,14 @@ __assert () {
 
     local test_case_calling_assert=${FUNCNAME[2]}
     local assert_caller_func_name=${FUNCNAME[1]}
-    local line=$(echo $(caller 1) | awk '{print $1}')
 
-    if [ $(correctNumberOfArgs ${actual_num_of_args} ${correct_num_of_args}) = "true" ]; then
-        local result=$(${callback_function} ${callback_args})
+    line=$(echo $"(caller 1)" | awk '{print $1}')
+    local line
 
-        if [ ${result} = "true" ]; then
+    if [ "$(correctNumberOfArgs "${actual_num_of_args}" "${correct_num_of_args}")" = "true" ]; then
+        result=$(${callback_function} "${callback_args}")
+
+        if [ "${result}" = "true" ]; then
             [[ "$VERBOSE_MODE" = "true" ]] && echo "Line ${line}: Passed - ${test_case_calling_assert}"
             incrementPassedTests
         else
@@ -163,7 +166,7 @@ __notNullCallback() {
 
 __trueCallback() {
     declare -a callback_args=("${!1}")
-    eval [ ${callback_args[0]} ]
+    eval [ "${callback_args[0]}" ]
     testResult=$?
     if [ "$testResult" = "0" ]; then
         echo "true"
@@ -174,7 +177,7 @@ __trueCallback() {
 
 __falseCallback() {
     declare -a callback_args=("${!1}")
-    eval [ ${callback_args[0]} ]
+    eval [ "${callback_args[0]}" ]
     testResult=$?
     if [ "$testResult" = "1" ]; then
         echo "true"
@@ -196,13 +199,15 @@ __containsCallback() {
 
 runUnitTests () {
     START_TIME=$(date +%s)
+
     # Explanation of the following command:
     # grep - E               - Use extended regexp
     # ^(function )?          - Lines may start with the keyword function followed by space
     # test.*?\(              - Match any line with 'test[anything] (', doesn't need 'function'
     # sed 's/^function //'   - Remove the 'function ' prefix from any string, if it occurs
     # tr - d ' (){'          - Remove the trailing ' (){' characters
-    test_names=$(grep -E '^(function )?test.*?\(' $0 | sed 's/^function //' | tr -d ' (){')
+    test_names=$(grep -E '^(function )?test.*?\(' "$0" | sed 's/^function //' | tr -d ' (){')
+
     test_names_array=($test_names)
 
     beginUnitTests
@@ -233,27 +238,27 @@ endUnitTests () {
         END_TIME=$(date +%s)
         echo ""
         echo "RESULTS: $passed_tests tests passed.  $failed_tests tests failed.  $total_tests tests total."
-        echo "Execution completed in $(($END_TIME - $START_TIME)) second(s)..."
+        echo "Execution completed in $((END_TIME - START_TIME)) second(s)..."
         echo ""
     fi
 }
 
 incrementPassedTests () {
-    passed_tests=$(($passed_tests+1))
+    passed_tests=$((passed_tests+1))
     incrementTotalTests
 }
 
 incrementFailedTests () {
-    failed_tests=$(($failed_tests+1))
+    failed_tests=$((failed_tests+1))
     incrementTotalTests
 }
 
 incrementTotalTests () {
-    total_tests=$(($total_tests+1))
+    total_tests=$((total_tests+1))
 }
 
 correctNumberOfArgs () {
-    if [ $1 = $2 ]; then
+    if [ "${1}" =  "${2}" ]; then
         echo "true"
     else
         echo "false"
@@ -261,5 +266,5 @@ correctNumberOfArgs () {
 }
 
 numericCompare () {
-    awk -v n1=$1 -v n2=$2 \ 'BEGIN { print (n1 == n2) ? "true" : "false" }' 2>/dev/null
+    awk -v n1="${1}" -v n2="${2}" \ 'BEGIN { print (n1 == n2) ? "true" : "false" }' 2>/dev/null
 }
