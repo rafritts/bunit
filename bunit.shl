@@ -26,9 +26,7 @@ showHelp () {
 }
 
 showVersion () {
-    echo ""
-    echo "bunit: Version 1.0.1"
-    echo ""
+    echo "bunit: Version 1.2.1"
 }
 
 setFailFast() {
