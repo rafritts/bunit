@@ -11,9 +11,12 @@ showHelp () {
     echo "  unitTestSuite.ut [options]"
     echo ""
     echo "Options"
-    echo "  -v  show output of tests"
-    echo "  -c  do not clear the screen before tests"
-    echo "  -h  show this help"
+    echo "  -v  shows the output of tests"
+    echo "  -c  does not clear the screen before tests"
+    echo "  -e  run with 'set -e' enabled. This will cause execution to halt if a command failed."
+    echo "  -u  run with 'set -u' enabled. This will cause execution to halt if a variable is unbound (declared but not used). Can cause instability."
+    echo "  -x  run with 'set -x' enabled. This will print all debug/trace messages. Generates a lot of output."
+    echo "  -h  show this help" 
     echo "  -V  show version"
     echo ""
 }
@@ -24,15 +27,33 @@ showVersion () {
     echo ""
 }
 
+setFailFast() {
+    set -e
+}
+
+setTrace() {
+    set -x
+}
+
+setUnboundVariables() {
+    set -u
+}
+
 # Parse arguments
 
-while getopts "h?vcV" opt; do
+while getopts "h?veuxcV" opt; do
     case "$opt" in
     h|\?)
         showHelp
         exit 0
         ;;
     v)  VERBOSE_MODE="true"
+        ;;
+    e)  setFailFast
+        ;;
+    u)  setUnboundVariables
+        ;;
+    x)  setTrace
         ;;
     c)  NO_SCREEN_CLEAR="true"
         ;;
