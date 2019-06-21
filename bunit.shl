@@ -20,7 +20,7 @@ showHelp () {
 
 showVersion () {
     echo ""
-    echo "BashScriptTestingLibrary: Version 1.0.1"
+    echo "bunit: Version 1.0.1"
     echo ""
 }
 
@@ -107,8 +107,7 @@ __assert () {
     local test_case_calling_assert=${FUNCNAME[2]}
     local assert_caller_func_name=${FUNCNAME[1]}
 
-    line=$(echo $"(caller 1)" | awk '{print $1}')
-    local line
+    local line=$(echo $(caller 1) | awk '{print $1}')
 
     if [ "$(correctNumberOfArgs "${actual_num_of_args}" "${correct_num_of_args}")" = "true" ]; then
         result=$(${callback_function} "${callback_args}")
@@ -201,11 +200,11 @@ runUnitTests () {
     START_TIME=$(date +%s)
 
     # Explanation of the following command:
-    # grep - E               - Use extended regexp
-    # ^(function )?          - Lines may start with the keyword function followed by space
+    # grep -E               - Use extended regexp
+    # ^(function )?          - Lines may start with the keyword 'function' followed by space
     # test.*?\(              - Match any line with 'test[anything] (', doesn't need 'function'
     # sed 's/^function //'   - Remove the 'function ' prefix from any string, if it occurs
-    # tr - d ' (){'          - Remove the trailing ' (){' characters
+    # tr -d ' (){'          - Remove the trailing ' (){' characters
     test_names=$(grep -E '^(function )?test.*?\(' "$0" | sed 's/^function //' | tr -d ' (){')
 
     test_names_array=($test_names)
