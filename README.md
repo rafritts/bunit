@@ -109,8 +109,4 @@ files or directories that you are intentionally trying to delete.  This probably
 
 11. You can change the name of `testSetup()` and `testTearDown()`.  They are not hard coded.  Refer to point #1.
 
-12. Please see the unit tests in `bunit_unit_tests` and in `examples` for more examples.
-
------
-
-### Please remember this is a work in progress!
+12. Please see the unit tests in `bunit_unit_tests` and in `examples` for more examples
